@@ -1,6 +1,7 @@
 # Lineage
 
-**Live demo:** [https://lineage-cognodb.vercel.app/](https://lineage-cognodb.vercel.app/)
+**Live demo:** [https://lineage-cognodb.vercel.app/](https://lineage-cognodb.vercel.app/)  
+**Screen recording:** [Google Drive](https://drive.google.com/file/d/1xSZg75nAUcYWixAMu87tyMz0ufwQCZAf/view?usp=sharing)
 
 ## Use case
 
