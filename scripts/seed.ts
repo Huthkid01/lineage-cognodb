@@ -33,6 +33,21 @@ function loadEnvFile() {
   }
 }
 
+/** Fixed Cypher per type — relationship types cannot be parameters in openCypher. */
+const MERGE_BY_TYPE: Record<string, string> = {
+  CREATED: `UNWIND $rows AS row MATCH (a {id: row.from}) MATCH (b {id: row.to}) MERGE (a)-[r:CREATED]->(b) SET r += row.props`,
+  STUDIED_WITH: `UNWIND $rows AS row MATCH (a {id: row.from}) MATCH (b {id: row.to}) MERGE (a)-[r:STUDIED_WITH]->(b) SET r += row.props`,
+  OWNED_BY: `UNWIND $rows AS row MATCH (a {id: row.from}) MATCH (b {id: row.to}) MERGE (a)-[r:OWNED_BY]->(b) SET r += row.props`,
+  LOANED_TO: `UNWIND $rows AS row MATCH (a {id: row.from}) MATCH (b {id: row.to}) MERGE (a)-[r:LOANED_TO]->(b) SET r += row.props`,
+  EXHIBITED_IN: `UNWIND $rows AS row MATCH (a {id: row.from}) MATCH (b {id: row.to}) MERGE (a)-[r:EXHIBITED_IN]->(b) SET r += row.props`,
+  HOSTED_BY: `UNWIND $rows AS row MATCH (a {id: row.from}) MATCH (b {id: row.to}) MERGE (a)-[r:HOSTED_BY]->(b) SET r += row.props`,
+  DEALT: `UNWIND $rows AS row MATCH (a {id: row.from}) MATCH (b {id: row.to}) MERGE (a)-[r:DEALT]->(b) SET r += row.props`,
+  RESTORED: `UNWIND $rows AS row MATCH (a {id: row.from}) MATCH (b {id: row.to}) MERGE (a)-[r:RESTORED]->(b) SET r += row.props`,
+  TRAINED_UNDER: `UNWIND $rows AS row MATCH (a {id: row.from}) MATCH (b {id: row.to}) MERGE (a)-[r:TRAINED_UNDER]->(b) SET r += row.props`,
+  INSPIRED_BY: `UNWIND $rows AS row MATCH (a {id: row.from}) MATCH (b {id: row.to}) MERGE (a)-[r:INSPIRED_BY]->(b) SET r += row.props`,
+  CURATED: `UNWIND $rows AS row MATCH (a {id: row.from}) MATCH (b {id: row.to}) MERGE (a)-[r:CURATED]->(b) SET r += row.props`,
+};
+
 loadEnvFile();
 
 function env(name: string): string {
@@ -119,22 +134,17 @@ async function main() {
     }
 
     for (const [type, rows] of byType) {
-      await session.run(
-        `
-        UNWIND $rows AS row
-        MATCH (a {id: row.from})
-        MATCH (b {id: row.to})
-        MERGE (a)-[r:${type}]->(b)
-        SET r += row.props
-        `,
-        {
-          rows: rows.map((r) => ({
-            from: r.from,
-            to: r.to,
-            props: r.props ?? {},
-          })),
-        },
-      );
+      const cypher = MERGE_BY_TYPE[type];
+      if (!cypher) {
+        throw new Error(`Unknown relationship type in seed data: ${type}`);
+      }
+      await session.run(cypher, {
+        rows: rows.map((r) => ({
+          from: r.from,
+          to: r.to,
+          props: r.props ?? {},
+        })),
+      });
       console.log(`  ${type}: ${rows.length}`);
     }
 

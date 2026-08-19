@@ -90,7 +90,7 @@ cp .env.example .env.local
 Set these environment variables in `.env.local`:
 
 ```
-COGNODB_URI=bolt+s://YOUR-INSTANCE.databases.cognodb.cloud
+COGNODB_URI=bolt+s://<instance-id>.databases.cognodb.cloud
 COGNODB_USER=cognodb
 COGNODB_PASSWORD=your-password
 ```

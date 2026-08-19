@@ -11,13 +11,20 @@ import { tryDb } from "@/lib/safe";
 
 export const dynamic = "force-dynamic";
 
-export default async function InvestigatePage() {
+export default async function InvestigatePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ from?: string; to?: string; artwork?: string }>;
+}) {
+  const { from = "w-azure", to = "w-harbor", artwork = "w-azure" } =
+    await searchParams;
+
   const result = await tryDb(() =>
     Promise.all([
       listArtworks(),
       disputeContagion(3),
-      shortestArtworkPath("w-azure", "w-harbor"),
-      restorerRecommendations("w-azure"),
+      shortestArtworkPath(from, to),
+      restorerRecommendations(artwork),
     ]),
   );
   if (!result.ok) return <ErrorPanel message={result.message} />;
@@ -62,13 +69,13 @@ export default async function InvestigatePage() {
 
       <PathFinder
         works={works}
-        initialFrom="w-azure"
-        initialTo="w-harbor"
+        initialFrom={from}
+        initialTo={to}
         initialPath={path}
       />
       <RestorerFinder
         works={works}
-        initialArtwork="w-azure"
+        initialArtwork={artwork}
         initialRestorers={restorers}
       />
     </div>
