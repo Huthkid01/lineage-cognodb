@@ -1,5 +1,7 @@
 # Lineage
 
+**Live demo:** [https://lineage-cognodb.vercel.app/](https://lineage-cognodb.vercel.app/)
+
 ## Use case
 
 Lineage is a collections-intelligence application for museum registrars, curators, and due-diligence researchers. It is backed by CognoDB.
