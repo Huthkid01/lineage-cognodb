@@ -17,6 +17,10 @@ export const metadata: Metadata = {
   title: "Lineage — provenance as a graph",
   description:
     "A CognoDB-backed explorer for artwork ownership, loans, restorers, and dispute contagion.",
+  icons: {
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    shortcut: ["/favicon.svg"],
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
