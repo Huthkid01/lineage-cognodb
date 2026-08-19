@@ -19,7 +19,7 @@ export default async function ArtistPage({
       <EmptyState
         title="Artist not found"
         body="That person is not in the seed graph."
-        action={{ href: "/", label: "Back to the collection" }}
+        action={{ href: "/works", label: "Back to the collection" }}
       />
     );
   }

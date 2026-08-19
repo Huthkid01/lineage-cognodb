@@ -26,7 +26,7 @@ export function WorkImage({
 
   return (
     <div
-      className={`relative h-full min-h-[12rem] w-full overflow-hidden ${className}`}
+      className={`relative h-full min-h-0 w-full overflow-hidden ${className}`}
       style={{ backgroundColor: palette }}
     >
       {!failed && (

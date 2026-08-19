@@ -18,7 +18,7 @@ export default async function InstitutionPage({
       <EmptyState
         title="Institution not found"
         body="That museum or gallery is not in the seed graph."
-        action={{ href: "/", label: "Back to the collection" }}
+        action={{ href: "/works", label: "Back to the collection" }}
       />
     );
   }

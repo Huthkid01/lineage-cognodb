@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { EmptyState, ErrorPanel } from "@/components/work-card";
 import { SearchBox, SearchHints } from "@/components/search-box";
+import { PageHeader } from "@/components/page-header";
 import { searchGraph } from "@/lib/queries";
 import { tryDb } from "@/lib/safe";
 
@@ -18,15 +19,14 @@ export default async function SearchPage({
 
   return (
     <div className="flex flex-col gap-8">
+      <PageHeader
+        kicker="Look up"
+        title="Search"
+        lede="Names, titles, cities, and movements — anything stored on a node."
+      />
       <div className="max-w-xl">
-        <h1 className="font-serif text-4xl tracking-tight">Search</h1>
-        <p className="mt-2 text-sm text-muted">
-          Names, titles, cities, and movements.
-        </p>
-        <div className="mt-5">
-          <SearchBox initial={q} />
-          <SearchHints />
-        </div>
+        <SearchBox initial={q} />
+        <SearchHints />
       </div>
       {!q.trim() && (
         <EmptyState

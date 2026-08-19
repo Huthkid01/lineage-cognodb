@@ -24,7 +24,7 @@ export default async function WorkPage({
       <EmptyState
         title="Work not found"
         body="That id is not in the seed graph."
-        action={{ href: "/", label: "Back to the collection" }}
+        action={{ href: "/works", label: "Back to the collection" }}
       />
     );
   }
@@ -34,7 +34,7 @@ export default async function WorkPage({
   return (
     <div className="flex flex-col gap-12">
       <nav className="text-xs text-muted" aria-label="Breadcrumb">
-        <Link href="/" className="hover:text-ink">
+        <Link href="/works" className="hover:text-ink">
           Collection
         </Link>
         <span className="mx-2">/</span>

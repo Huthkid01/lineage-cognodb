@@ -5,9 +5,22 @@ import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
 
 const links = [
-  { href: "/", label: "Collection" },
-  { href: "/investigate", label: "Investigate" },
-  { href: "/model", label: "Data model" },
+  { href: "/", label: "Home", match: (path: string) => path === "/" },
+  {
+    href: "/works",
+    label: "Collection",
+    match: (path: string) => path === "/works" || path.startsWith("/works/"),
+  },
+  {
+    href: "/investigate",
+    label: "Investigate",
+    match: (path: string) => path.startsWith("/investigate"),
+  },
+  {
+    href: "/model",
+    label: "How it works",
+    match: (path: string) => path.startsWith("/model"),
+  },
 ];
 
 export function Header() {
@@ -40,15 +53,14 @@ export function Header() {
       >
         Skip to content
       </a>
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-5 sm:py-3.5">
-        <Link href="/" className="font-serif text-xl tracking-tight sm:text-[1.35rem]">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-5 sm:py-3.5">
+        <Link href="/" className="shrink-0 font-serif text-xl tracking-tight sm:text-[1.35rem]">
           Lineage
         </Link>
 
         <nav className="hidden items-center gap-0.5 text-sm md:flex" aria-label="Primary">
           {links.map((link) => {
-            const active =
-              link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
+            const active = link.match(pathname);
             return (
               <Link
                 key={link.href}
@@ -64,6 +76,16 @@ export function Header() {
               </Link>
             );
           })}
+          <Link
+            href="/search"
+            className={`rounded-full px-3 py-1.5 transition ${
+              pathname.startsWith("/search")
+                ? "bg-ink text-paper"
+                : "text-muted hover:bg-ink/5 hover:text-ink"
+            }`}
+          >
+            Search
+          </Link>
         </nav>
 
         <button
@@ -88,28 +110,26 @@ export function Header() {
       </div>
 
       {open && (
-        <div
-          id={menuId}
-          className="border-t border-line bg-paper md:hidden"
-        >
+        <div id={menuId} className="border-t border-line bg-paper md:hidden">
           <nav className="mx-auto flex max-w-6xl flex-col px-4 py-3" aria-label="Mobile">
-            {links.map((link) => {
-              const active =
-                link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  aria-current={active ? "page" : undefined}
-                  className={`rounded-xl px-3 py-3 text-base ${
-                    active ? "bg-ink text-paper" : "text-ink"
-                  }`}
-                  onClick={() => setOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
+            {[...links, { href: "/search", label: "Search", match: (p: string) => p.startsWith("/search") }].map(
+              (link) => {
+                const active = link.match(pathname);
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    aria-current={active ? "page" : undefined}
+                    className={`rounded-xl px-3 py-3 text-base ${
+                      active ? "bg-ink text-paper" : "text-ink"
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              },
+            )}
           </nav>
         </div>
       )}
@@ -120,9 +140,24 @@ export function Header() {
 export function Footer() {
   return (
     <footer className="mt-auto border-t border-line">
-      <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-8 text-xs text-muted sm:flex-row sm:justify-between sm:px-5">
-        <p>Lineage · collections due diligence on CognoDB.</p>
-        <p>Fictional works. Parameterized Cypher. Built for a non-specialist to explore.</p>
+      <div className="mx-auto grid max-w-6xl gap-6 px-4 py-10 sm:grid-cols-[1.2fr_1fr] sm:px-5">
+        <div>
+          <p className="font-serif text-lg text-ink">Lineage</p>
+          <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">
+            Provenance intelligence for collections, backed by CognoDB. Fictional works,
+            real graph questions.
+          </p>
+        </div>
+        <nav className="grid grid-cols-2 gap-2 text-sm" aria-label="Footer">
+          {links.map((link) => (
+            <Link key={link.href} href={link.href} className="text-muted hover:text-ink">
+              {link.label}
+            </Link>
+          ))}
+          <Link href="/search" className="text-muted hover:text-ink">
+            Search
+          </Link>
+        </nav>
       </div>
     </footer>
   );

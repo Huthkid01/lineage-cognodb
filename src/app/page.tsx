@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SearchBox, SearchHints } from "@/components/search-box";
 import { ErrorPanel, WorkCard } from "@/components/work-card";
+import { SectionTitle } from "@/components/page-header";
 import { getStats, listFeatured } from "@/lib/queries";
 import { tryDb } from "@/lib/safe";
 
@@ -66,21 +67,19 @@ export default async function HomePage() {
       </section>
 
       <section>
-        <div className="mb-6 flex items-end justify-between gap-4">
-          <div>
-            <h2 className="font-serif text-2xl tracking-tight sm:text-3xl">Start with a work</h2>
-            <p className="mt-1 text-sm text-muted">
-              Disputed titles first. Click any canvas to open its provenance.
-            </p>
-          </div>
-          <Link href="/investigate" className="hidden text-sm text-copper hover:underline sm:inline">
-            Open investigations →
-          </Link>
-        </div>
+        <SectionTitle
+          title="Start with a work"
+          lede="Disputed titles first. Click any canvas to open its provenance."
+          action={
+            <Link href="/works" className="hidden text-sm text-copper hover:underline sm:inline">
+              View the full collection →
+            </Link>
+          }
+        />
         {featured.length === 0 ? (
-          <p className="text-sm text-muted">The collection is empty. Run npm run seed.</p>
+          <p className="text-sm text-muted">The collection has not loaded yet.</p>
         ) : (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
             {featured.map((work) => (
               <WorkCard key={work.id} work={work} />
             ))}

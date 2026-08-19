@@ -7,6 +7,7 @@ import {
   restorerRecommendations,
   shortestArtworkPath,
 } from "@/lib/queries";
+import { PageHeader } from "@/components/page-header";
 import { tryDb } from "@/lib/safe";
 
 export const dynamic = "force-dynamic";
@@ -33,17 +34,11 @@ export default async function InvestigatePage({
 
   return (
     <div className="flex flex-col gap-10 sm:gap-16">
-      <header className="max-w-2xl">
-        <p className="text-[11px] uppercase tracking-[0.25em] text-copper">
-          Graph-native questions
-        </p>
-        <h1 className="mt-2 font-serif text-3xl tracking-tight sm:text-4xl">Investigations</h1>
-        <p className="mt-3 leading-relaxed text-muted">
-          Three questions a registrar cannot cheaply ask a spreadsheet:
-          how far a dispute has spread, how two works are connected, and who
-          in a workshop can treat an object without having touched it before.
-        </p>
-      </header>
+      <PageHeader
+        kicker="Graph-native questions"
+        title="Investigate"
+        lede="Three questions a registrar cannot cheaply ask a spreadsheet: how far a dispute has spread, how two works are connected, and who in a workshop can treat an object without having touched it before."
+      />
 
       <section className="flex flex-col gap-6">
         <SectionHead
